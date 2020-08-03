@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  users_db:
+    image: postgres:latest
+    ports:
+      - ${USERS_POSTGRES_PORT}:5432
+    volumes:
+      - ./var/users/pgdata/:/var/lib/postgresql/
+    environment:
+      POSTGRES_DB: ${USERS_POSTGRES_DB}
+      POSTGRES_USER: ${USERS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${USERS_POSTGRES_PASSWORD}
+
+  offers_db:
+    image: postgres:latest
+    ports:
+      - ${OFFERS_POSTGRES_PORT}:5432
+    volumes:
+      - ./var/offers/pgdata/:/var/lib/postgresql/
+    environment:
+      POSTGRES_DB: ${OFFERS_POSTGRES_DB}
+      POSTGRES_USER: ${OFFERS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${OFFERS_POSTGRES_PASSWORD}

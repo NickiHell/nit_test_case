@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  users_app:
+    build:
+      context: .
+      dockerfile: ./compose/users/Dockerfile
+    depends_on:
+      - users_db
+      - offers_app
+    links:
+      - users_db
+    ports:
+      - ${USERS_PORT}:${USERS_PORT}
+    env_file:
+      - .env
+
+  offers_app:
+    build:
+      context: .
+      dockerfile: ./compose/offers/Dockerfile
+    depends_on:
+      - offers_db
+    links:
+      - offers_db
+    ports:
+      - ${OFFERS_PORT}:${OFFERS_PORT}
+    env_file:
+      - .env
+
+  users_db:
+    image: postgres:latest
+    volumes:
+      - ./var/users/pgdata/:/var/lib/postgresql/
+    environment:
+      POSTGRES_DB: ${USERS_POSTGRES_DB}
+      POSTGRES_USER: ${USERS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${USERS_POSTGRES_PASSWORD}
+
+  offers_db:
+    image: postgres:latest
+    volumes:
+      - ./var/offers/pgdata/:/var/lib/postgresql/
+    environment:
+      POSTGRES_DB: ${OFFERS_POSTGRES_DB}
+      POSTGRES_USER: ${OFFERS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${OFFERS_POSTGRES_PASSWORD}
